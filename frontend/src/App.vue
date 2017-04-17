@@ -60,13 +60,13 @@
 		</div>
 
 		<div id='map-detail'>
-			<gmap-map :center='center' :zoom='12' style='width: 100%; height: 812px'>
+			<gmap-map :center='center' :zoom='12' style='width: 100%; height: 870px'>
 				<gmap-marker
 						v-for='m in markers'
 						:position='m.position'
 						:clickable='true'
 						:draggable='true'
-						@click='center=m.position' 
+						@click='center=m.position'
 				></gmap-marker>
 			</gmap-map>
 		</div>
