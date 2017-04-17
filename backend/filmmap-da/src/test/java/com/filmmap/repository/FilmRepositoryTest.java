@@ -3,7 +3,6 @@ package com.filmmap.repository;
 import static org.junit.Assert.assertEquals;
 
 import com.filmmap.domain.Film;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,20 @@ public class FilmRepositoryTest {
 
   @Autowired
   private FilmRepository filmRepository;
+  @Test
+  public void getByTitlesLike_nameExist_returnExpectedFilms2() {
+
+    List<Object[]> films = filmRepository.findByTitleLike("on");
+    assertEquals(2, films.size());
+  }
+  @Test
+  public void getByTitlesLike_nameExist_returnExpectedFilms() {
+
+    List<Object[]> films = filmRepository.findByTitleLike("Hours");
+    assertEquals(1, films.size());
+    assertEquals(1L, films.get(0)[0]);
+    assertEquals("St24 Hours on Craigslist", films.get(0)[1]);
+  }
 
   @Test
   public void findByTitle_titleExist_returnOneFilmWithExpectedId() {

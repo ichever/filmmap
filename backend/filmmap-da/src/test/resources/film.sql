@@ -3,7 +3,7 @@ insert into actor values (2, 'Black');
 insert into actor values (3, 'Steven');
 
 insert into film(id, title, release_year, fun_facts,production_company,distributor, director, writer) values (1, 'St24 Hours on Craigslist', 2011, 'so fun', 'SPI Cinemas', 'General Film Company', 'Charls Chaplin', 'Charls Chaplin');
-insert into film(id, title, release_year, fun_facts,production_company,distributor, director, writer) values (2, 'Ant Man', 2015, 'so fun', 'SPI Cinemas', 'General Film Company', 'Charls Chaplin', 'Charls Chaplin');
+insert into film(id, title, release_year, fun_facts,production_company,distributor, director, writer) values (2, 'Ant Man on', 2015, 'so fun', 'SPI Cinemas', 'General Film Company', 'Charls Chaplin', 'Charls Chaplin');
 
 insert into location(id, name, latitude, longitude) values (1, 'Justin Herman Plaza', 37.7951195, -122.3952007);
 insert into location(id, name, latitude, longitude) values (2, '200 block Market Street', 39.9498186, -75.14385089999999);

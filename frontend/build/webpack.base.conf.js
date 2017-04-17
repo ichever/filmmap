@@ -3,9 +3,15 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
+
+const cssLoader = PRODUCTION ?
+    ExtractTextPlugin.extract({
+        loader: 'css-loader?localIdentName=' + cssIdentifier
+    }) :
+    ['style-loader', 'css-loader?localIdentName=' + cssIdentifier];
 
 module.exports = {
   entry: {
@@ -15,8 +21,8 @@ module.exports = {
     path: config.build.assetsRoot,
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+        ? config.build.assetsPublicPath
+        : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -61,6 +67,11 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
+      },
+      {
+        test: /\.css$/,
+        loaders: cssLoader,
+        exclude: '/node_modules/'
       }
     ]
   }

@@ -11,11 +11,14 @@
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "update": "npm run build && cp -rf dist/* ../backend/filmmap-rest/src/main/resources/public/"
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "vue": "^2.2.2"
+    "bootstrap-vue": "^0.12.4",
+    "vue": "^2.2.2",
+    "vue-typeahead": "^2.3.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

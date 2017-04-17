@@ -2,6 +2,7 @@ package com.filmmap.controller;
 
 import com.filmmap.domain.Film;
 import com.filmmap.repository.FilmRepository;
+import com.filmmap.rest.domain.NameId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class FilmController {
@@ -23,13 +25,13 @@ public class FilmController {
   @Autowired
   private FilmRepository filmRepository;
 
-  @RequestMapping("/films")
+  @RequestMapping("/film")
   @ResponseBody
-  public ResponseEntity<List<Film>> getFilms(@RequestParam(value = "name") String name) {
+  public ResponseEntity<Film> getFilmById(@RequestParam(value = "id") Long id) {
 
-    List<Film> films = filmRepository.findByTitle(name);
+    Film film = filmRepository.findOne(id);
 
-    return ResponseEntity.ok(films);
+    return ResponseEntity.ok(film);
   }
 
   @RequestMapping(value = "/film", method = RequestMethod.POST)
@@ -42,6 +44,28 @@ public class FilmController {
       return ResponseEntity.unprocessableEntity().build();
     }
     return ResponseEntity.ok(filmId);
+  }
+
+  @RequestMapping("/films")
+  @ResponseBody
+  public ResponseEntity<List<Film>> getFilmsByTitle(@RequestParam(value = "title") String title) {
+
+    List<Film> films = filmRepository.findByTitle(title);
+
+    return ResponseEntity.ok(films);
+  }
+
+  @RequestMapping("/films/like")
+  @ResponseBody
+  public ResponseEntity<List<NameId>> getMatchFilms(@RequestParam(value = "title") String title) {
+
+    List<Object[]> filmObjs = filmRepository.findByTitleLike(title);
+
+    List<NameId> films = filmObjs.stream()
+        .map(item -> new NameId(Long.valueOf(item[0].toString()), String.valueOf(item[1])))
+        .collect(Collectors.toList());
+
+    return ResponseEntity.ok(films);
   }
 
 }
