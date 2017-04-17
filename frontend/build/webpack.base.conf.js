@@ -7,12 +7,6 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const cssLoader = PRODUCTION ?
-    ExtractTextPlugin.extract({
-        loader: 'css-loader?localIdentName=' + cssIdentifier
-    }) :
-    ['style-loader', 'css-loader?localIdentName=' + cssIdentifier];
-
 module.exports = {
   entry: {
     app: './src/main.js'
@@ -67,11 +61,6 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
-      {
-        test: /\.css$/,
-        loaders: cssLoader,
-        exclude: '/node_modules/'
       }
     ]
   }

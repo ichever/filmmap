@@ -1,24 +1,26 @@
 <template>
-	<div id='app'>
+	<div id='main'>
 
 		<div id='film-info-search'>
 
-			<i class='fa fa-spinner fa-spin' v-if='loading'></i>
-			<template v-else>
-				<i class='fa fa-search' v-show='isEmpty'></i>
-				<i class="fa fa-times" v-show="isDirty" @click="reset"></i>
-			</template>
+			<div class="search-field">
+				<i class='fa fa-spinner fa-spin' v-if='loading'></i>
+				<template v-else>
+					<i class='fa fa-search' v-show='isEmpty'></i>
+					<i class='fa fa-times' v-show="isDirty" @click="reset"></i>
+				</template>
 
-			<!-- the input field -->
-			<input type='text' placeholder='Enter filter names'
-				   autocomplete='off' v-model='query'
-				   @keydown.down='down'
-				   @keydown.up='up'
-				   @keydown.enter='hit'
-				   @keydown.esc='reset'
-				   @blur='reset'
-				   @input='update'/>
 
+				<!-- the input field -->
+				<input type='text' placeholder='Enter movie name'
+					   autocomplete='off' v-model='query'
+					   @keydown.down='down'
+					   @keydown.up='up'
+					   @keydown.enter='hit'
+					   @keydown.esc='reset'
+					   @blur='reset'
+					   @input='update'/>
+			</div>
 			<!-- the list -->
 			<ul v-show='hasItems'>
 				<li v-for='(item, $item) in items' :class='activeClass($item)' @mousedown='hit'
@@ -29,44 +31,42 @@
 
 			<div id='film-detail'>
 				<div class='film-item'>
-					<div class='item-value film-title'>{{film.title}}</div>
-					<div class='item-value film-release-year'>({{film.releaseYear}})</div>
+					<div id='film-title' class=''>{{film.title}}</div>
+					<div id='film-release-year' class='item-value'>({{film.releaseYear}})</div>
 				</div>
-
 
 				<div class='film-item' v-if="film.distributor != ''">
 					<div class='item-label font-small'>Distributor:&nbsp;</div>
 					<div class='item-value font-small'>{{film.distributor}}</div>
 				</div>
+
 				<div class='film-item' v-if="film.writer != ''">
 					<div class='item-label font-small'>Writer:&nbsp;</div>
 					<div class='item-value font-small'>{{film.writer}}</div>
 				</div>
-				<div class='film-item' v-if="film.actors != []">
+
+				<div class='film-item' v-if="hasActors">
 					<div class='item-label font-small'>Actors:&nbsp;</div>
-					<div class='item-value font-small'>
-						<a href="https://en.wikipedia.org/wiki" v-for="actor in film.actors">
-							<div class='item-actor'>{{actor.name}}</div>
-						</a>
+					<div class='item-value font-small' v-for="actor in film.actors">
+						<div class='item-actor'>{{actor.name}},&nbsp;</div>
 					</div>
 				</div>
-				<div class='film-item' v-if="film.funFacts != ''">
-					<div class='item-value font-small'>{{film.funFacts}}</div>
+
+				<div id='film-fun-facts' class='film-item' v-if="film.funFacts != ''">
+					<div class=' font-small'>{{film.funFacts}}</div>
 				</div>
 
-
 			</div>
-
 		</div>
 
 		<div id='map-detail'>
-			<gmap-map :center='center' :zoom='12' style='width: 100%; height: 600px'>
+			<gmap-map :center='center' :zoom='12' style='width: 100%; height: 812px'>
 				<gmap-marker
 						v-for='m in markers'
 						:position='m.position'
 						:clickable='true'
 						:draggable='true'
-						@click='center=m.position'
+						@click='center=m.position' 
 				></gmap-marker>
 			</gmap-map>
 		</div>
@@ -101,9 +101,9 @@
 
         data: '',
 
-        limit: 5,
+        limit: 10,
 
-        minChars: 3,
+        minChars: 1,
 
         selectFirst: true,
 
@@ -221,6 +221,12 @@
       'googleMap': Map
     },
 
+    computed: {
+      hasActors: function () {
+        return this.film.actors.length > 0
+      }
+    },
+
     methods: {
 
       convertToPosition (locations) {
@@ -255,35 +261,54 @@
 </script>
 
 <style>
-	body {
-		background-color: #e5e5e5 !important;
+	#film-map-body {
+		background-color: #e5e5e5;
+		margin: 0;
 	}
 
 	#top-ban {
 		height: 50px;
-		background-color: #8ad2ff;
-		font-size: 2em;
-		color: #22313a;
+		background-color: #2c3e50;
+		color: whitesmoke;
 	}
 
 	#top-ban-label {
+		font-size: 2em;
+		float: left;
 		margin-left: 10px;
+		margin-top: 7px;
+	}
+
+	#top-ban-sub {
+		padding-top: 20px;
+		padding-left: 20px;
+	}
+
+	.search-field {
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 
 	#film-info-search {
-		width: 18%;
+		width: 26%;
 		float: left;
-		margin-left: 10px;
-		margin-top: 10px;
+		min-height: calc(100vh - 50px);
+		background-color: #3f5c72;
+		color: #eeeeee;
 	}
 
 	#film-detail {
 		margin-top: 20px;
 	}
 
+	#film-release-year {
+		margin-top: 2px;
+	}
+
 	#film-detail .film-item {
-		width: 100%;
+		width: 90%;
 		padding-top: 10px;
+		margin-left: 15px;
 		clear: both;
 	}
 
@@ -293,38 +318,41 @@
 
 	#film-detail .item-value {
 		float: left;
+		color: #ff9632;
 	}
 
 	.font-small {
 		font-size: 15px;
 	}
 
-	.film-title {
+	#film-title {
 		font-size: 18px;
-		color: #555;
+		float: left;
+		color: #f0f0f0;
 		font-weight: 600;
 	}
 
-	.film-release-year {
+	#film-release-year {
 		margin-left: 10px;
 		color: #50799b;
 	}
 
-	#app {
+	#film-fun-facts {
+		padding-top: 30px;
+	}
+
+	#main {
 		font-family: 'Avenir', Helvetica, Arial, sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		color: #2c3e50;
-		width: 100%;
-		height: 90%;
 	}
 
 	#map-detail {
-		width: 80%;
-		height: auto;
+		width: 74%;
+		height: 100%;
 		float: right;
-		margin-top: 10px;
-		padding-right: 10px;
+		background-color: #AAB2BE;
 	}
 
 	input {
@@ -340,6 +368,7 @@
 		border-radius: 20px;
 		letter-spacing: 1px;
 		box-sizing: border-box;
+		font-family: "Helvetica Neue", Helvetica, sans-serif;
 	}
 
 	input:focus {
@@ -357,7 +386,6 @@
 		position: relative;
 		top: 27px;
 		right: 20px;
-		opacity: 0.4;
 	}
 
 	ul {
@@ -400,15 +428,7 @@
 	}
 
 	.active span {
-		color: #efefef;
+		color: white;
 	}
 
-	.name {
-		font-weight: 700;
-		font-size: 18px;
-	}
-
-	.screen-name {
-		font-style: italic;
-	}
 </style>

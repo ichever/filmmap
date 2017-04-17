@@ -18,7 +18,8 @@
     "axios": "^0.16.1",
     "bootstrap-vue": "^0.12.4",
     "vue": "^2.2.2",
-    "vue-typeahead": "^2.3.1"
+    "vue-typeahead": "^2.3.1",
+    "vue2-google-maps": "^0.7.5"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
