@@ -94,9 +94,6 @@
 	<profiles>
 		<profile>
 			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 			<properties>
 				<environmentClassifier>dev</environmentClassifier>
 			</properties>
@@ -104,6 +101,9 @@
 
 		<profile>
 			<id>prod</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
 				<environmentClassifier>production</environmentClassifier>
 			</properties>
