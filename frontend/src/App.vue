@@ -60,7 +60,8 @@
 		</div>
 
 		<div id='map-detail'>
-			<gmap-map :center='center' :zoom='12' style='width: 100%; height: 870px'>
+			<gmap-map :center='center' :zoom='12'
+					  style='width: 100%; height: calc(100% - 50px); position: absolute; left:26%; top:0'>
 				<gmap-marker
 						v-for='m in markers'
 						:position='m.position'
@@ -87,7 +88,7 @@
     }
   })
 
-/* global DATA_API */
+  /* global DATA_API */
   var dataApi = `${DATA_API}`
 
   export default {
@@ -392,10 +393,11 @@
 	}
 
 	ul {
-		width: 18%;
+		width: 24%;
 		position: absolute;
 		padding: 0;
 		margin-top: 8px;
+		margin-left: 20px;
 		min-width: 15%;
 		background-color: #fff;
 		list-style: none;
