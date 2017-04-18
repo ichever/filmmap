@@ -87,6 +87,9 @@
     }
   })
 
+/* global DATA_API */
+  var dataApi = `${DATA_API}`
+
   export default {
     extends: VueTypeahead,
 
@@ -97,7 +100,7 @@
 
         query: '',
 
-        src: 'http://localhost:8080/films/like',
+        src: dataApi + 'films/like',
 
         data: '',
 
@@ -241,7 +244,7 @@
 
       onHit (item) {
         this.items = []
-        axios.get(`http://localhost:8080/film?id=` + item.id)
+        axios.get(dataApi + 'film?id=' + item.id)
         .then(response => {
           this.film = response.data
           this.markers = this.convertToPosition(response.data.locations)
