@@ -140,7 +140,7 @@
 
     computed: {
       hasActors: function () {
-        return this.film.actors.length > 0
+        return this.film !== undefined && this.film.actors !== undefined && this.film.actors.length > 0
       }
     },
 
