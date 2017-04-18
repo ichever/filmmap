@@ -21,7 +21,7 @@
 					   @blur='reset'
 					   @input='update'/>
 			</div>
-			<!-- the list -->
+			<!-- the option list -->
 			<ul v-show='hasItems'>
 				<li v-for='(item, $item) in items' :class='activeClass($item)' @mousedown='hit'
 					@mousemove='setActive($item)'>
@@ -29,6 +29,7 @@
 				</li>
 			</ul>
 
+			<!-- Movie details -->
 			<div id='film-detail'>
 				<div class='film-item'>
 					<div id='film-title' class=''>{{film.title}}</div>
@@ -61,7 +62,7 @@
 
 		<div id='map-detail'>
 			<gmap-map :center='center' :zoom='12'
-					  style='width: 100%; height: calc(100% - 50px); position: absolute; left:26%; top:0'>
+					  style='width: 74%; height: calc(100% - 50px); position: absolute; left:26%; top:50px'>
 				<gmap-marker
 						v-for='m in markers'
 						:position='m.position'
@@ -113,112 +114,24 @@
 
         queryParamName: 'title',
 
-        film: {
-          title: 'Looking Season 2 ep 204',
-          releaseYear: 2015,
-          funFacts: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-          productionCompany: 'Mission Street Productions, LLC',
-          distributor: 'HBO',
-          director: 'Andrew Haigh',
-          writer: 'Michael Lannan',
-          locations: [
-            {
-              id: 18,
-              name: '534 Hyde Street',
-              latitude: 37.78597,
-              longitude: -122.41611
-            },
-            {
-              id: 24,
-              name: '970 Geary Street',
-              latitude: 37.786137,
-              longitude: -122.4193
-            },
-            {
-              id: 17,
-              name: '3650 21st Street',
-              latitude: 37.756535,
-              longitude: -122.42909
-            },
-            {
-              id: 22,
-              name: 'Larken Street Youth Services, 1138 Sutter Street',
-              latitude: 37.78226,
-              longitude: -122.41302
-            },
-            {
-              id: 16,
-              name: 'Castro Street @ 18th street',
-              latitude: 37.76089,
-              longitude: -122.43503
-            },
-            {
-              id: 19,
-              name: 'Urban Flowers, 4029 18th Street',
-              latitude: 37.760887,
-              longitude: -122.433395
-            },
-            {
-              id: 15,
-              name: 'Daniels Pharmacy, 943 Geneva Ave.',
-              latitude: 37.71632,
-              longitude: -122.440346
-            },
-            {
-              id: 25,
-              name: '601 Buena Vista Ave West',
-              latitude: 37.766922,
-              longitude: -122.44403
-            },
-            {
-              id: 26,
-              name: 'Dolores Park, San Francisco',
-              latitude: 37.759617,
-              longitude: -122.4269
-            },
-            {
-              id: 21,
-              name: '1890 Clay Street',
-              latitude: 37.792194,
-              longitude: -122.42403
-            },
-            {
-              id: 20,
-              name: 'Bi-Rite Creamery, 3692 18th Stret',
-              latitude: 37.76159,
-              longitude: -122.42572
-            },
-            {
-              id: 23,
-              name: 'Esta Noche, 3079 16th Street',
-              latitude: 37.764824,
-              longitude: -122.421326
-            }
-          ],
-          actors: [
-            {
-              id: 22,
-              name: 'Jonathan Groff'
-            },
-            {
-              id: 23,
-              name: 'Murray Bartlett'
-            },
-            {
-              id: 21,
-              name: 'Frankie Alvarez'
-            }
-          ]
-        },
+        film: {},
 
-        center: {lat: 37.7749295, lng: -122.4194155},
+        center: {lat: 37.7849295, lng: -122.3194155},
 
-        markers: [{
-          position: {lat: 37.792427, lng: -122.41061}
-        }, {
-          position: {lat: 37.81722, lng: -122.370705}
-        }]
+        markers: []
       }
+    },
+
+    mounted: function () {
+      var self = this
+      axios.get(dataApi + 'film?id=2')
+      .then(response => {
+        self.film = response.data
+        self.markers = this.convertToPosition(response.data.locations)
+      })
+      .catch(e => {
+        self.errors.push(e)
+      })
     },
 
     components: {
