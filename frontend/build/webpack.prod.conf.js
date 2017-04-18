@@ -30,7 +30,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env,
-      'DATA_API': JSON.stringify('http://sf-film-map.herokuapp.com/')
+      'DATA_API': JSON.stringify('https://sf-film-map.herokuapp.com/')
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
