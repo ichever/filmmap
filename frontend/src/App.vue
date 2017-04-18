@@ -168,8 +168,6 @@
         })
       },
 
-      // The callback function which is triggered when the response data are received
-      // (optional)
       prepareResponseData (data) {
         return data
       }
