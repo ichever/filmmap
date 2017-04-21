@@ -17,7 +17,7 @@
 	<context:property-placeholder location="classpath:datasource.properties"/>
 
 	<jdbc:initialize-database data-source="filmDataSource">
-		<jdbc:script location="classpath:film.sql" separator=";"/>
+		<jdbc:script location="classpath:film-test-data.sql" separator=";"/>
 	</jdbc:initialize-database>
 
 </beans>

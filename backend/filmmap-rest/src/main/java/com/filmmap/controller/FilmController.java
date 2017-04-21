@@ -3,6 +3,7 @@ package com.filmmap.controller;
 import com.filmmap.domain.Film;
 import com.filmmap.repository.FilmRepository;
 import com.filmmap.rest.domain.NameId;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,23 @@ public class FilmController {
 
   private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
 
-  @Autowired
   private FilmRepository filmRepository;
+
+  @Autowired
+  public FilmController(FilmRepository filmRepository) {
+    this.filmRepository = filmRepository;
+  }
 
   @RequestMapping("/film")
   @ResponseBody
   public ResponseEntity<Film> getFilmById(@RequestParam(value = "id") Long id) {
 
     Film film = filmRepository.findOne(id);
+    if (film != null) {
+      return ResponseEntity.ok(film);
+    }
 
-    return ResponseEntity.ok(film);
+    return ResponseEntity.noContent().build();
   }
 
   @RequestMapping(value = "/film", method = RequestMethod.POST)
@@ -46,15 +54,6 @@ public class FilmController {
     return ResponseEntity.ok(filmId);
   }
 
-  @RequestMapping("/films")
-  @ResponseBody
-  public ResponseEntity<List<Film>> getFilmsByTitle(@RequestParam(value = "title") String title) {
-
-    List<Film> films = filmRepository.findByTitle(title);
-
-    return ResponseEntity.ok(films);
-  }
-
   @RequestMapping("/films/like")
   @ResponseBody
   public ResponseEntity<List<NameId>> getMatchFilms(@RequestParam(value = "title") String title) {
@@ -65,7 +64,10 @@ public class FilmController {
         .map(item -> new NameId(Long.valueOf(item[0].toString()), String.valueOf(item[1])))
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok(films);
+    if (CollectionUtils.isNotEmpty(films)) {
+      return ResponseEntity.ok(films);
+    }
+    return ResponseEntity.noContent().build();
   }
 
 }
