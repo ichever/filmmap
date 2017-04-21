@@ -127,7 +127,7 @@
           distributor: ''
         },
 
-        center: {lat: 37.7749295, lng: -122.3894155},
+        center: {lat: 37.7749295, lng: -122.4394155},
 
         markers: []
       }
