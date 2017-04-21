@@ -33,7 +33,7 @@
 			<div id='film-detail'>
 				<div class='film-item'>
 					<div id='film-title' class=''>{{film.title}}</div>
-					<div id='film-release-year' class='item-value'>({{film.releaseYear}})</div>
+					<div id='film-release-year' class='item-value' v-if="film.releaseYear != ''">({{film.releaseYear}})</div>
 				</div>
 
 				<div class='film-item' v-if="film.distributor != ''">
@@ -56,6 +56,11 @@
 				<div id='film-fun-facts' class='film-item' v-if="film.funFacts != ''">
 					<div class=' font-small'>{{film.funFacts}}</div>
 				</div>
+
+				<div id='error-msg' class='film-item' v-if="sysError != ''">
+					<div class=' font-small'>{{sysError}}</div>
+				</div>
+
 
 			</div>
 		</div>
@@ -114,9 +119,15 @@
 
         queryParamName: 'title',
 
-        film: {},
+        sysError: '',
 
-        center: {lat: 37.7849295, lng: -122.3194155},
+        film: {
+          writer: '',
+          releaseYear: '',
+          distributor: ''
+        },
+
+        center: {lat: 37.7749295, lng: -122.3894155},
 
         markers: []
       }
@@ -124,12 +135,14 @@
 
     mounted: function () {
       var self = this
+      this.sysError = ''
       axios.get(dataApi + 'film?id=2')
       .then(response => {
         self.film = response.data
         self.markers = this.convertToPosition(response.data.locations)
       })
       .catch(e => {
+        this.sysError = 'Data api is still loading, please wait for few seconds and try it again.'
         self.errors.push(e)
       })
     },
@@ -261,6 +274,10 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		color: #2c3e50;
+	}
+
+	#error-msg {
+		color: #ca3f43;
 	}
 
 	#map-detail {
