@@ -142,8 +142,10 @@
         self.markers = this.convertToPosition(response.data.locations)
       })
       .catch(e => {
+        this.film.writer = ''
+        this.film.releaseYear = ''
+        this.film.distributor = ''
         this.sysError = 'Data api is still loading, please wait for few seconds and try it again.'
-        self.errors.push(e)
       })
     },
 
