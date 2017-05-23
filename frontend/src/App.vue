@@ -90,7 +90,7 @@
 
   Vue.use(VueGoogleMaps, {
     load: {
-      key: 'AIzaSyBNCLmXai1-W7259Uj2QWHWp1mXPbl-GpI'
+      key: 'AIzaSyCDEPNzugP5X2YoLbWpQZ1HUfQUojldRd0'
     }
   })
 
